@@ -110,3 +110,64 @@ plt.legend()
 plt.tight_layout()
 plt.savefig("temperatury_2023.png")
 plt.show()
+
+------------------------------------------------------
+
+plt.plot(x, y) — линия.
+
+plt.scatter(x, y) — точечный график.
+
+plt.bar(x, y) — столбчатый график.
+
+plt.hist(data) — гистограмма.
+
+plt.title("Tytuł") — заголовок.
+
+plt.xlabel("X"), plt.ylabel("Y") — подписи осей.
+
+plt.legend() — легенда.
+
+plt.grid(True) — сетка.
+
+plt.show() — отобразить график.
+
+plt.savefig("nazwa.png") — сохранить изображение.
+
+
+
+
+np.array([1, 2, 3]) — создание массива.
+
+np.arange(1, 13) — массив [1, 2, ..., 12].
+
+np.mean(a) — среднее.
+
+np.max(a), np.min(a) — максимум/минимум.
+
+np.round(a, 1) — округление до 1 знака.
+
+a.shape — размер массива.
+
+a + b, a * 2 — операции над массивами.
+
+
+
+
+
+pd.read_csv("file.csv") — чтение CSV-файла.
+
+df.head() — первые строки.
+
+df.info() — информация о таблице.
+
+df.describe() — статистика.
+
+df['kolumna'] — доступ к колонке.
+
+df['nowa'] = ... — добавление новой колонки.
+
+df.groupby('kolumna').mean() — группировка и среднее.
+
+df.plot() — быстрый график.
+
+
