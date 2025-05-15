@@ -1,173 +1,255 @@
-# Python_tasks_2025
+//zadanie 1
+const currentUser = {
+  name: "Jan",
+  surname: "Kowalski",
+  email: "jan.kowalski@example.com",
+  www: "https://jan.dev",
+  userType: "admin",
+  isActive: true,
 
-import requests
-import pandas as pd
-import matplotlib.pyplot as plt
-import numpy as np
+  show() {
+    console.log(`Imię: ${this.name}`);
+    console.log(`Nazwisko: ${this.surname}`);
+    console.log(`Email: ${this.email}`);
+    console.log(`WWW: ${this.www}`);
+    console.log(`Typ użytkownika: ${this.userType}`);
+    console.log(`Aktywny: ${this.isActive}`);
+  },
 
-def get_monthly_avg_temp(lat, lon, timezone):
-    url = (
-        f"https://archive-api.open-meteo.com/v1/archive?"
-        f"latitude={lat}&longitude={lon}"
-        f"&start_date=2023-01-01&end_date=2023-12-31"
-        f"&daily=temperature_2m_mean&timezone={timezone}"
-    )
-    response = requests.get(url)
-    data = response.json()
+  setActive(active) {
+    this.isActive = active;
+  }
+};
 
-    df = pd.DataFrame({
-        'date': data['daily']['time'],
-        'temp': data['daily']['temperature_2m_mean']
-    })
-    df['date'] = pd.to_datetime(df['date'])
-    df['month'] = df['date'].dt.month
-    monthly_avg = df.groupby('month')['temp'].mean().round(1)
-    return monthly_avg.values
+// Пример использования
+currentUser.show();          // Показываем пользователя
+currentUser.setActive(false); // Деактивируем
+currentUser.show();          // Снова показываем
 
-# Получение данных
-warszawa = get_monthly_avg_temp(52.2298, 21.0118, "Europe/Warsaw")
-londyn = get_monthly_avg_temp(51.5072, -0.1276, "Europe/London")
-months = np.arange(1, 13)
 
-# Построение графиков
-fig, axs = plt.subplots(3, 1, figsize=(10, 15))
+//zadanie 2
+class Book {
+  constructor() {
+    this.users = [];
+  }
 
-# 1. Линейный график
-axs[0].plot(months, warszawa, marker='o', label='Warszawa', color='blue')
-axs[0].plot(months, londyn, marker='s', label='Londyn', color='green')
-axs[0].set_title('Średnie miesięczne temperatury (2023)')
-axs[0].set_xticks(months)
-axs[0].legend()
-axs[0].grid(True)
+  addUser(name, age, phone) {
+    this.users.push({ name, age, phone });
+  }
 
-# 2. Столбчатый график разницы температур
-diff = londyn - warszawa
-colors = ['red' if d > 0 else 'blue' for d in diff]
-axs[1].bar(months, diff, color=colors)
-axs[1].set_title('Różnica temperatur (Londyn - Warszawa)')
-axs[1].axhline(0, color='black')
-axs[1].set_xticks(months)
-axs[1].grid(True)
+  showUsers() {
+    console.log("Wszyscy użytkownicy w książce:");
+    this.users.forEach((user, index) => {
+      console.log(`${index + 1}. ${user.name}, ${user.age} lat, tel: ${user.phone}`);
+    });
+  }
 
-# 3. Точечный график сравнения
-sc = axs[2].scatter(warszawa, londyn, c=diff, cmap='coolwarm', s=100)
-for i, (wx, lx) in enumerate(zip(warszawa, londyn)):
-    axs[2].annotate(str(i+1), (wx, lx), textcoords="offset points", xytext=(5, 5), ha='center')
-axs[2].plot([min(warszawa), max(warszawa)], [min(warszawa), max(warszawa)], 'k--', label='y = x')
-axs[2].set_xlabel('Temperatura w Warszawie')
-axs[2].set_ylabel('Temperatura w Londynie')
-axs[2].set_title('Porównanie temperatur')
-plt.colorbar(sc, ax=axs[2], label='Różnica (Londyn - Warszawa)')
-axs[2].legend()
-axs[2].grid(True)
+  findByName(name) {
+    const found = this.users.find(user => user.name === name);
+    console.log(found || false);
+  }
 
-# Сохраняем
-plt.tight_layout()
-plt.savefig("temperatury_2023.png")
-plt.show()
--------------------------------------------------------------
+  findByPhone(phone) {
+    const found = this.users.find(user => user.phone === phone);
+    console.log(found || false);
+  }
 
-import matplotlib.pyplot as plt
-import numpy as np
+  getCount() {
+    console.log(`Liczba użytkowników: ${this.users.length}`);
+  }
+}
 
-# Średnie miesięczne temperatury (fikcyjne dane)
-warszawa = np.array([-1, 0, 5, 10, 15, 19, 21, 20, 15, 10, 5, 0])
-londyn = np.array([4, 5, 8, 12, 16, 19, 22, 21, 17, 13, 8, 5])
-months = np.arange(1, 13)
+// Пример использования
+const myBook = new Book();
+myBook.addUser("Anna", 28, "123456789");
+myBook.addUser("Jan", 32, "987654321");
+myBook.showUsers();
+myBook.findByName("Anna");
+myBook.findByPhone("000000000");
+myBook.getCount();
 
-# 1. Wykres liniowy
-plt.figure(figsize=(10, 12))
 
-plt.subplot(3, 1, 1)
-plt.plot(months, warszawa, marker='o', color='blue', label='Warszawa')
-plt.plot(months, londyn, marker='s', color='green', label='Londyn')
-plt.title('Średnie miesięczne temperatury w 2023 roku')
-plt.xticks(months)
-plt.ylabel('Temperatura (°C)')
-plt.legend()
+//zadanie 3
+const text = {
+  check(txt, word) {
+    return txt.includes(word);
+  },
 
-# 2. Wykres słupkowy różnicy (Londyn - Warszawa)
-plt.subplot(3, 1, 2)
-diff = londyn - warszawa
-colors = ['red' if d > 0 else 'blue' for d in diff]
-plt.bar(months, diff, color=colors)
-plt.title('Różnica temperatur (Londyn - Warszawa)')
-plt.xticks(months)
-plt.ylabel('Różnica (°C)')
+  getCount(txt) {
+    return txt.length;
+  },
 
-# 3. Wykres punktowy: X - Warszawa, Y - Londyn
-plt.subplot(3, 1, 3)
-sc = plt.scatter(warszawa, londyn, c=diff, cmap='coolwarm', s=100)
-for i, (x, y) in enumerate(zip(warszawa, londyn)):
-    plt.text(x + 0.3, y, str(i + 1))
-plt.plot(warszawa, warszawa, linestyle='--', color='black', label='y=x')
-plt.colorbar(sc, label='Londyn - Warszawa')
-plt.title('Temperatura Londyn vs Warszawa')
-plt.xlabel('Warszawa (°C)')
-plt.ylabel('Londyn (°C)')
-plt.legend()
+  getWordsCount(txt) {
+    return txt.trim().split(/\s+/).length;
+  },
 
-plt.tight_layout()
-plt.savefig("temperatury_2023.png")
-plt.show()
+  setCapitalize(txt) {
+    return txt
+      .split(" ")
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  },
 
-------------------------------------------------------
+  setMix(txt) {
+    return txt
+      .split("")
+      .map((char, index) =>
+        index % 2 === 0 ? char.toLowerCase() : char.toUpperCase()
+      )
+      .join("");
+  },
 
-plt.plot(x, y) — линия.
+  generateRandom(lng) {
+    const letters = "abcdefghijklmnopqrstuvwxyz";
+    let result = "";
+    for (let i = 0; i < lng; i++) {
+      const rand = Math.floor(Math.random() * letters.length);
+      result += letters[rand];
+    }
+    return result;
+  }
+};
 
-plt.scatter(x, y) — точечный график.
-
-plt.bar(x, y) — столбчатый график.
-
-plt.hist(data) — гистограмма.
-
-plt.title("Tytuł") — заголовок.
-
-plt.xlabel("X"), plt.ylabel("Y") — подписи осей.
-
-plt.legend() — легенда.
-
-plt.grid(True) — сетка.
-
-plt.show() — отобразить график.
-
-plt.savefig("nazwa.png") — сохранить изображение.
+// Примеры:
+console.log(text.check("ala ma kota", "kota")); // true
+console.log(text.getCount("ala ma kota"));      // 11
+console.log(text.getWordsCount("Ala ma kota")); // 3
+console.log(text.setCapitalize("ala ma kota")); // "Ala Ma Kota"
+console.log(text.setMix("ala ma kota"));        // "aLa mA KoTa"
+console.log(text.generateRandom(10));           // напр., "kjsudfjwei"
 
 
 
+//zadanie 4
+String.prototype.mirror = function () {
+  return this.split("").reverse().join("");
+};
 
-np.array([1, 2, 3]) — создание массива.
-
-np.arange(1, 13) — массив [1, 2, ..., 12].
-
-np.mean(a) — среднее.
-
-np.max(a), np.min(a) — максимум/минимум.
-
-np.round(a, 1) — округление до 1 знака.
-
-a.shape — размер массива.
-
-a + b, a * 2 — операции над массивами.
+// Пример использования:
+console.log("Ala ma kota".mirror()); // "atok am alA"
 
 
+//zadanie 5
+a) 
+function outer() {
+  let count = 0;
+  return function inner() {
+    count++;
+    return count;
+  }
+}
+
+const counter = outer();
+counter(); // 1
+counter(); // 2
+
+b)
+function createCounter() {
+  let count = 0;
+
+  return function () {
+    count++;
+    return count;
+  }
+}
+
+// Пример использования:
+const counter1 = createCounter();
+console.log(counter1()); // 1
+console.log(counter1()); // 2
+console.log(counter1()); // 3
+
+const counter2 = createCounter();
+console.log(counter2()); // 1 (независимый счётчик)
+console.log(counter2()); // 2
 
 
 
-pd.read_csv("file.csv") — чтение CSV-файла.
+//zadanie
+// Базовый класс
+class Product {
+  constructor(name, price) {
+    this.name = name;
+    this.price = price;
+  }
+}
 
-df.head() — первые строки.
+// Наследник с количеством
+class CartProduct extends Product {
+  constructor(name, price, quantity) {
+    super(name, price);
+    this.quantity = quantity;
+  }
 
-df.info() — информация о таблице.
+  getTotal() {
+    return this.price * this.quantity;
+  }
+}
 
-df.describe() — статистика.
+// Пример использования
+const cart = [
+  new CartProduct("Jabłko", 2, 5),
+  new CartProduct("Chleb", 4, 2),
+  new CartProduct("Mleko", 3, 1),
+];
 
-df['kolumna'] — доступ к колонке.
+function getCartSum(cart) {
+  return cart.reduce((sum, item) => sum + item.getTotal(), 0);
+}
 
-df['nowa'] = ... — добавление новой колонки.
+console.log("Suma koszyka:", getCartSum(cart)); // => Suma koszyka: 21
 
-df.groupby('kolumna').mean() — группировка и среднее.
 
-df.plot() — быстрый график.
 
+//zadanie
+function guessNumber(attempts) {
+  const target = Math.floor(Math.random() * 10) + 1; // число от 1 до 10
+
+  for (let i = 0; i < attempts.length; i++) {
+    if (attempts[i] === target) {
+      return {
+        success: true,
+        attempt: i + 1,
+        number: target
+      };
+    }
+  }
+
+  return {
+    success: false,
+    attemptsTried: attempts.length,
+    number: target
+  };
+}
+
+// Пример использования:
+const result = guessNumber([3, 5, 2, 7]);
+console.log(result);
+
+
+
+//zadanie
+class NumberStats {
+  constructor(numbers) {
+    this.numbers = numbers;
+  }
+
+  // Метод: длина списка
+  getLength() {
+    return this.numbers.length;
+  }
+
+  // Метод: среднее арифметическое
+  getAverage() {
+    if (this.numbers.length === 0) return 0;
+    const sum = this.numbers.reduce((acc, val) => acc + val, 0);
+    return sum / this.numbers.length;
+  }
+}
+
+// Пример использования:
+const stats = new NumberStats([5, 10, 15, 20]);
+
+console.log("Długość listy:", stats.getLength());         // => 4
+console.log("Średnia arytmetyczna:", stats.getAverage()); // => 12.5
 
