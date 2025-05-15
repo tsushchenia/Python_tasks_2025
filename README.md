@@ -253,3 +253,97 @@ const stats = new NumberStats([5, 10, 15, 20]);
 console.log("Długość listy:", stats.getLength());         // => 4
 console.log("Średnia arytmetyczna:", stats.getAverage()); // => 12.5
 
+
+//zadanie 4
+function generateRandom(min, max) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+const numbers = [];
+for (let i = 0; i < 10; i++) {
+  numbers.push(generateRandom(1, 20));
+}
+
+console.log("Wylosowane liczby:", numbers);
+
+const aboveTen = numbers.filter(n => n > 10).length;
+
+if (aboveTen >= 5) {
+  console.log("Udało się");
+} else {
+  console.log("Niestety nie");
+}
+
+
+//zadanie 5
+function checkPalindrom(txt) {
+  const cleaned = txt.toLowerCase().replace(/\s/g, '');
+  const reversed = cleaned.split('').reverse().join('');
+  return cleaned === reversed;
+}
+
+console.log(checkPalindrom("kajak"));      // true
+console.log(checkPalindrom("Ala ma ala")); // true
+console.log(checkPalindrom("kot"));        // false
+
+
+//zadanie 6
+function random(max) {
+  return Math.floor(Math.random() * (max + 1));
+}
+
+const arr = [];
+for (let i = 0; i < 20; i++) {
+  arr.push(random(100));
+}
+
+arr.sort((a, b) => a - b);
+console.log("Posortowana tablica:", arr);
+
+const sum = arr.reduce((acc, val) => acc + val, 0);
+const avg = sum / arr.length;
+
+console.log("Suma:", sum);
+console.log("Średnia:", avg.toFixed(2));
+
+
+//zadanie 7
+function removeDuplicates(nums) {
+  if (nums.length === 0) return 0;
+
+  let k = 1;
+  for (let i = 1; i < nums.length; i++) {
+    if (nums[i] !== nums[i - 1]) {
+      nums[k] = nums[i];
+      k++;
+    }
+  }
+  return k;
+}
+
+const nums = [1, 1, 2, 2, 3, 4, 4];
+const k = removeDuplicates(nums);
+console.log("Liczba unikalnych:", k);
+console.log("Unikalne elementy:", nums.slice(0, k));
+
+
+
+//zadanie 8
+function longestCommonPrefix(strs) {
+  if (strs.length === 0) return "";
+
+  let prefix = strs[0];
+
+  for (let i = 1; i < strs.length; i++) {
+    while (strs[i].indexOf(prefix) !== 0) {
+      prefix = prefix.slice(0, -1);
+      if (prefix === "") return "";
+    }
+  }
+  return prefix;
+}
+
+console.log(longestCommonPrefix(["flower", "flow", "flight"])); // "fl"
+console.log(longestCommonPrefix(["dog", "racecar", "car"]));    // ""
+
+
