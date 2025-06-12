@@ -130,3 +130,46 @@ doubleAll = map (*2)
 sumOfDigits :: Int -> Int
 sumOfDigits n = sum $ map (read . (:[])) $ show $ abs n
 
+
+
+
+--prolog
+% Допустимые цвета
+color(zielony).
+color(czerwony).
+color(niebieski).
+
+% Главная процедура раскраски
+color_graph(Graph, Coloring) :-
+    assign_colors(Graph, Coloring),
+    check_constraints(Graph, Coloring).
+
+% Назначение цвета каждому узлу
+assign_colors([], []).
+assign_colors([Node|Rest], [Node-Color|ColoredRest]) :-
+    color(Color),
+    assign_colors(Rest, ColoredRest).
+
+% Проверка, что никакие соседние узлы не имеют одинаковый цвет
+check_constraints([], _).
+check_constraints([Node-Neighbors|Rest], Coloring) :-
+    member(Node-Color, Coloring),
+    check_neighbors(Neighbors, Color, Coloring),
+    check_constraints(Rest, Coloring).
+
+check_neighbors([], _, _).
+check_neighbors([Neighbor|Rest], Color, Coloring) :-
+    member(Neighbor-NeighborColor, Coloring),
+    Color \= NeighborColor,
+    check_neighbors(Rest, Color, Coloring).
+
+
+
+
+example_graph([
+    a-[b, c],
+    b-[a, c],
+    c-[a, b]
+]).
+
+example_graph(G), color_graph(G, Coloring).
