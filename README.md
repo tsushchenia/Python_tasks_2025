@@ -173,3 +173,57 @@ example_graph([
 ]).
 
 example_graph(G), color_graph(G, Coloring).
+
+
+
+
+--concat
+concatWithSpace :: String -> String -> String
+concatWithSpace s1 s2 = s1 ++ " " ++ s2
+
+
+
+
+
+
+--graph
+% Определяем допустимые цвета
+color(zielony).
+color(niebieski).
+color(czerwony).
+
+% Определяем рёбра графа
+edge(a, c).
+edge(a, b).
+edge(c, b).
+edge(b, d).
+edge(d, e).
+
+% Симметричность рёбер (граф неориентированный)
+edge(X, Y) :- edge(Y, X).
+
+% Главный предикат — раскраска
+coloring([
+    a-ColorA,
+    b-ColorB,
+    c-ColorC,
+    d-ColorD,
+    e-ColorE
+]) :-
+    color(ColorA),
+    color(ColorB),
+    color(ColorC),
+    color(ColorD),
+    color(ColorE),
+
+    % Ограничения: соседние вершины — разные цвета
+    \+ (edge(a, b), ColorA = ColorB),
+    \+ (edge(a, c), ColorA = ColorC),
+    \+ (edge(b, c), ColorB = ColorC),
+    \+ (edge(b, d), ColorB = ColorD),
+    \+ (edge(d, e), ColorD = ColorE).
+
+
+
+
+
